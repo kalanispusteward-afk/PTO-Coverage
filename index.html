@@ -6,162 +6,46 @@
 <title>Shift Coverage Board</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: #0f172a;
-  color: #f1f5f9;
-  font-family: Georgia, serif;
-  min-height: 100vh;
-}
+body { background: #0f172a; color: #f1f5f9; font-family: Georgia, serif; min-height: 100vh; }
 button { font-family: inherit; cursor: pointer; }
 input, select { font-family: inherit; }
 
-/* ── LOGIN ── */
-#login {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.lcard {
-  background: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 16px;
-  padding: 40px 32px;
-  max-width: 460px;
-  width: 100%;
-  text-align: center;
-}
+/* LOGIN */
+#login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.lcard { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 40px 32px; max-width: 460px; width: 100%; text-align: center; }
 .licon { font-size: 48px; margin-bottom: 10px; }
 .ltitle { font-size: 22px; font-weight: normal; color: #f1f5f9; margin-bottom: 6px; }
 .lsub { font-size: 14px; color: #64748b; margin-bottom: 24px; }
-.discbox {
-  background: #0f172a;
-  border: 1px solid rgba(245,158,11,0.3);
-  border-radius: 10px;
-  padding: 14px 16px;
-  margin-bottom: 22px;
-  text-align: left;
-}
-.disclabel {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  cursor: pointer;
-  color: #cbd5e1;
-  font-size: 13px;
-  line-height: 1.65;
-}
+.discbox { background: #0f172a; border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 14px 16px; margin-bottom: 22px; text-align: left; }
+.disclabel { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; color: #cbd5e1; font-size: 13px; line-height: 1.65; }
 #dcheck { accent-color: #f59e0b; width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; }
-#pwinput {
-  display: block;
-  width: 100%;
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 9px;
-  padding: 13px 16px;
-  color: #f1f5f9;
-  font-size: 16px;
-  letter-spacing: 6px;
-  text-align: center;
-  outline: none;
-  margin-bottom: 10px;
-}
+#pwinput { display: block; width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 9px; padding: 13px 16px; color: #f1f5f9; font-size: 16px; letter-spacing: 6px; text-align: center; outline: none; margin-bottom: 10px; }
 #pwerr { color: #f87171; font-size: 13px; min-height: 20px; margin-bottom: 6px; }
-.lbtn {
-  display: block;
-  width: 100%;
-  background: #3b82f6;
-  border: none;
-  border-radius: 9px;
-  padding: 13px;
-  color: #fff;
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 10px;
-}
+.lbtn { display: block; width: 100%; background: #3b82f6; border: none; border-radius: 9px; padding: 13px; color: #fff; font-size: 15px; font-weight: bold; margin-top: 10px; }
 .lbtn:hover { background: #2563eb; }
 .lbtn:disabled { background: #1e3a5f; color: #475569; cursor: not-allowed; }
 
-/* ── BOARD ── */
+/* BOARD */
 #board { display: none; }
-.topbar {
-  background: #1e293b;
-  border-bottom: 1px solid #334155;
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+.topbar { background: #1e293b; border-bottom: 1px solid #334155; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 .btitle { font-size: 18px; color: #f1f5f9; }
 .bsub { font-size: 12px; color: #64748b; margin-top: 3px; }
 .legend { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .ldot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 .ltxt { font-size: 12px; color: #94a3b8; margin-right: 8px; }
-.mnav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 18px 16px 8px;
-}
-.nbtn {
-  background: #1e293b;
-  border: 1px solid #334155;
-  color: #94a3b8;
-  font-size: 24px;
-  width: 42px; height: 42px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.mnav { display: flex; align-items: center; justify-content: center; gap: 20px; padding: 18px 16px 8px; }
+.nbtn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; font-size: 24px; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 .nbtn:hover { background: #293548; }
 .mlabel { font-size: 20px; font-weight: normal; min-width: 200px; text-align: center; }
 .chint { text-align: center; color: #475569; font-size: 13px; margin-bottom: 10px; }
 #loadbar { text-align: center; padding: 30px; color: #64748b; font-size: 14px; display: none; }
-.spin {
-  display: inline-block;
-  width: 16px; height: 16px;
-  border: 2px solid #334155;
-  border-top-color: #3b82f6;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  vertical-align: middle;
-  margin-right: 6px;
-}
+.spin { display: inline-block; width: 16px; height: 16px; border: 2px solid #334155; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── CALENDAR ── */
-.cgrid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
-  padding: 0 8px;
-  max-width: 740px;
-  margin: 0 auto;
-}
-.dhdr {
-  text-align: center;
-  font-size: 11px;
-  color: #475569;
-  padding: 2px 0 8px;
-  font-weight: bold;
-  letter-spacing: 0.8px;
-}
-.ccell {
-  min-height: 76px;
-  background: #1e293b;
-  border-radius: 8px;
-  border: 1px solid #1e293b;
-  padding: 5px 4px 4px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transition: border-color 0.12s, background 0.12s;
-}
+/* CALENDAR */
+.cgrid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; padding: 0 8px; max-width: 740px; margin: 0 auto; }
+.dhdr { text-align: center; font-size: 11px; color: #475569; padding: 2px 0 8px; font-weight: bold; letter-spacing: 0.8px; }
+.ccell { min-height: 76px; background: #1e293b; border-radius: 8px; border: 1px solid #1e293b; padding: 5px 4px 4px; display: flex; flex-direction: column; overflow: hidden; transition: border-color 0.12s, background 0.12s; }
 .ccell.fut { cursor: pointer; }
 .ccell.fut:hover { border-color: #334155; background: #243047; }
 .ccell.today { border: 2px solid #3b82f6 !important; background: #1e3a5f; }
@@ -172,117 +56,30 @@ input, select { font-family: inherit; }
 .dnum { font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 3px; display: block; }
 .ccell.today .dnum { color: #60a5fa; }
 .plushint { font-size: 18px; color: #334155; text-align: center; width: 100%; margin-top: 4px; opacity: 0.7; }
-.pill {
-  border-radius: 4px;
-  border: 1px solid;
-  padding: 2px 4px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3px;
-  margin-bottom: 2px;
-}
+.pill { border-radius: 4px; border: 1px solid; padding: 2px 4px; display: flex; align-items: center; justify-content: space-between; gap: 3px; margin-bottom: 2px; }
 .ptxt { font-size: 9px; color: #cbd5e1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 54px; }
 .pchk { font-size: 9px; color: #22c55e; flex-shrink: 0; }
 
-/* ── FLASH ── */
-#flash {
-  position: fixed;
-  top: 14px; left: 50%;
-  transform: translateX(-50%);
-  background: #16a34a;
-  color: #fff;
-  padding: 10px 22px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  z-index: 9999;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-  white-space: nowrap;
-  display: none;
-}
+/* FLASH */
+#flash { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); background: #16a34a; color: #fff; padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: bold; z-index: 9999; box-shadow: 0 4px 24px rgba(0,0,0,0.5); white-space: nowrap; display: none; }
 #flash.err { background: #dc2626; }
 
-/* ── OVERLAYS ── */
-.obg {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
-}
-.obox {
-  background: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 14px;
-  padding: 28px 22px 22px;
-  max-width: 440px;
-  width: 100%;
-  position: relative;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-.ocls {
-  position: absolute;
-  top: 12px; right: 14px;
-  background: transparent;
-  border: none;
-  color: #64748b;
-  font-size: 22px;
-  line-height: 1;
-}
+/* OVERLAYS */
+.obg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+.obox { background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 28px 22px 22px; max-width: 440px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; }
+.ocls { position: absolute; top: 12px; right: 14px; background: transparent; border: none; color: #64748b; font-size: 22px; line-height: 1; }
 .ocls:hover { color: #94a3b8; }
 .odate { font-size: 18px; color: #f1f5f9; font-weight: normal; margin-bottom: 4px; }
 .osub { font-size: 13px; color: #64748b; margin-bottom: 18px; }
 
-/* ── FORM FIELDS ── */
-.flbl {
-  display: block;
-  font-size: 11px;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 5px;
-  margin-top: 14px;
-}
-.finp {
-  display: block;
-  width: 100%;
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 8px;
-  padding: 11px 13px;
-  color: #f1f5f9;
-  font-size: 14px;
-  outline: none;
-}
+/* FORM */
+.flbl { display: block; font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; margin-top: 14px; }
+.finp { display: block; width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 11px 13px; color: #f1f5f9; font-size: 14px; outline: none; }
 .finp:focus { border-color: #3b82f6; }
 
-/* ── WEEK GRID ── */
-.wgrid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  margin-top: 6px;
-}
-.wbtn {
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 6px;
-  padding: 8px 2px;
-  color: #94a3b8;
-  font-size: 11px;
-  text-align: center;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  transition: all 0.12s;
-}
+/* WEEK GRID */
+.wgrid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin-top: 6px; }
+.wbtn { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 8px 2px; color: #94a3b8; font-size: 11px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; transition: all 0.12s; }
 .wbtn:hover:not(:disabled) { border-color: #0d9488; color: #2dd4bf; }
 .wbtn.sel { background: rgba(13,148,136,0.15); border-color: #0d9488; color: #2dd4bf; font-weight: bold; }
 .wbtn:disabled { opacity: 0.3; cursor: not-allowed; }
@@ -290,127 +87,39 @@ input, select { font-family: inherit; }
 .wdd { font-size: 13px; font-weight: bold; }
 .snote { font-size: 12px; color: #475569; margin-top: 8px; line-height: 1.5; font-style: italic; }
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 .brow { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
-.ccbtn {
-  background: transparent;
-  border: 1px solid #334155;
-  border-radius: 8px;
-  padding: 10px 16px;
-  color: #64748b;
-  font-size: 13px;
-}
+.ccbtn { background: transparent; border: 1px solid #334155; border-radius: 8px; padding: 10px 16px; color: #64748b; font-size: 13px; }
 .ccbtn:hover { border-color: #475569; color: #94a3b8; }
-.sbtn {
-  background: #3b82f6;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  color: #fff;
-  font-size: 13px;
-  font-weight: bold;
-}
+.sbtn { background: #3b82f6; border: none; border-radius: 8px; padding: 10px 20px; color: #fff; font-size: 13px; font-weight: bold; }
 .sbtn:hover:not(:disabled) { background: #2563eb; }
 .sbtn:disabled { background: #1e3a5f; color: #475569; cursor: not-allowed; }
 
-/* ── DAY VIEW ── */
-.dvhdr {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.ambtn {
-  background: #3b82f6;
-  border: none;
-  border-radius: 7px;
-  padding: 8px 14px;
-  color: #fff;
-  font-size: 13px;
-  font-weight: bold;
-}
+/* DAY VIEW */
+.dvhdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+.ambtn { background: #3b82f6; border: none; border-radius: 7px; padding: 8px 14px; color: #fff; font-size: 13px; font-weight: bold; }
 .ambtn:hover { background: #2563eb; }
-.pcard {
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 12px;
-}
-.pctop {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
+.pcard { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+.pctop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
 .pname { font-size: 16px; color: #f1f5f9; font-weight: bold; }
 .pnote { font-size: 12px; color: #64748b; margin-top: 2px; }
 .xb { background: transparent; border: none; color: #475569; font-size: 20px; padding: 0 4px; line-height: 1; }
 .xb:hover { color: #94a3b8; }
 .xbs { background: transparent; border: none; color: #475569; font-size: 14px; padding: 0 2px; }
 .xbs:hover { color: #94a3b8; }
-.ohdr {
-  font-size: 11px;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 6px;
-  margin-top: 10px;
-}
-.orow {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 0;
-  border-bottom: 1px solid #1e293b;
-  flex-wrap: wrap;
-}
-.obadge {
-  font-size: 10px;
-  font-weight: bold;
-  color: #fff;
-  border-radius: 4px;
-  padding: 3px 8px;
-  letter-spacing: 0.4px;
-  flex-shrink: 0;
-}
+.ohdr { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; margin-top: 10px; }
+.orow { display: flex; align-items: center; gap: 7px; padding: 7px 0; border-bottom: 1px solid #1e293b; flex-wrap: wrap; }
+.obadge { font-size: 10px; font-weight: bold; color: #fff; border-radius: 4px; padding: 3px 8px; letter-spacing: 0.4px; flex-shrink: 0; }
 .bcov { background: #1d4ed8; }
 .bswp { background: #0f766e; }
 .oname { font-size: 13px; color: #cbd5e1; flex: 1; }
 .oswp { font-size: 12px; color: #67e8f9; width: 100%; padding-left: 4px; }
 .arow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-.covbtn {
-  flex: 1;
-  background: #1d4ed8;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 0;
-  color: #fff;
-  font-size: 13px;
-  font-weight: bold;
-  min-width: 130px;
-}
+.covbtn { flex: 1; background: #1d4ed8; border: none; border-radius: 8px; padding: 12px 0; color: #fff; font-size: 13px; font-weight: bold; min-width: 130px; }
 .covbtn:hover { background: #1e40af; }
-.swpbtn {
-  flex: 1;
-  background: transparent;
-  border: 1px solid #0d9488;
-  border-radius: 8px;
-  padding: 12px 0;
-  color: #2dd4bf;
-  font-size: 13px;
-  font-weight: bold;
-  min-width: 130px;
-}
+.swpbtn { flex: 1; background: transparent; border: 1px solid #0d9488; border-radius: 8px; padding: 12px 0; color: #2dd4bf; font-size: 13px; font-weight: bold; min-width: 130px; }
 .swpbtn:hover { background: rgba(13,148,136,0.1); }
-.no-offers {
-  font-size: 13px;
-  color: #475569;
-  font-style: italic;
-  margin: 8px 0 10px;
-}
+.no-offers { font-size: 13px; color: #475569; font-style: italic; margin: 8px 0 10px; }
 
 @media (max-width: 480px) {
   .ccell { min-height: 58px; }
@@ -422,7 +131,7 @@ input, select { font-family: inherit; }
 </head>
 <body>
 
-<!-- ═══ LOGIN ═══ -->
+<!-- LOGIN -->
 <div id="login">
   <div class="lcard">
     <div class="licon">&#128737;</div>
@@ -442,7 +151,7 @@ input, select { font-family: inherit; }
   </div>
 </div>
 
-<!-- ═══ BOARD ═══ -->
+<!-- BOARD -->
 <div id="board">
   <div id="flash"></div>
   <div class="topbar">
@@ -465,7 +174,7 @@ input, select { font-family: inherit; }
   <div class="cgrid" id="cgrid"></div>
 </div>
 
-<!-- ═══ MODAL: Add Request ═══ -->
+<!-- MODAL: Add Request -->
 <div class="obg" id="madd" style="display:none" onclick="closeModal('madd')">
   <div class="obox" onclick="event.stopPropagation()">
     <button class="ocls" onclick="closeModal('madd')">&times;</button>
@@ -482,7 +191,7 @@ input, select { font-family: inherit; }
   </div>
 </div>
 
-<!-- ═══ MODAL: View Day ═══ -->
+<!-- MODAL: View Day -->
 <div class="obg" id="mview" style="display:none" onclick="closeModal('mview')">
   <div class="obox" onclick="event.stopPropagation()">
     <button class="ocls" onclick="closeModal('mview')">&times;</button>
@@ -494,7 +203,7 @@ input, select { font-family: inherit; }
   </div>
 </div>
 
-<!-- ═══ MODAL: Cover ═══ -->
+<!-- MODAL: Cover -->
 <div class="obg" id="mcov" style="display:none" onclick="closeModal('mcov')">
   <div class="obox" onclick="event.stopPropagation()">
     <button class="ocls" onclick="closeModal('mcov')">&times;</button>
@@ -509,7 +218,7 @@ input, select { font-family: inherit; }
   </div>
 </div>
 
-<!-- ═══ MODAL: Swap ═══ -->
+<!-- MODAL: Swap -->
 <div class="obg" id="mswp" style="display:none" onclick="closeModal('mswp')">
   <div class="obox" onclick="event.stopPropagation()">
     <button class="ocls" onclick="closeModal('mswp')">&times;</button>
@@ -530,59 +239,43 @@ input, select { font-family: inherit; }
 
 <script>
 // ══════════════════════════════════════════════
-//  CONFIG — your Google Sheet
+//  CONFIG
 // ══════════════════════════════════════════════
-var SHEET_ID   = '1t_ZMEg9gSpMGDcE82EaZv9Zs5xPixfMZ6RUcQ472t90';
-var API_KEY    = '';        // filled in below — see note
-var PASSWORD   = 'sunrise2026';
-
-// We use the Google Sheets REST API (public read) + a small
-// write proxy via Apps Script for writes.
-// For READS  → Google Sheets API v4 (no auth needed if sheet is public)
-// For WRITES → We store locally and sync, using a public Apps Script
-//              web app as a thin write proxy.
-//
-// ── WRITE PROXY URL ──────────────────────────────────────────
-// Since we still need Apps Script for writes, paste your
-// Apps Script URL here (the one ending in /exec).
-// The HTML page does all rendering — Apps Script just saves rows.
-var PROXY_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSA5QE1NY9w7tnzjGLkhW9H7Q8Fb8-FmRi7zefazY0mg1FWm8PK3pCYnZgk7UaWDXZKKnCmRB3TokXgmv13nmBS9pOq13UPp2mTD8Kvnze_jG_Nln-6wPhp3c4VAzKkhPAgofKA91RIXtC39JmWg9PDaJ6XHpieXzC20s-N3L6Z2_P_Zwt1UlSZAO01LmdRzX0CmzTWyZxWHeTrjuV9egTJR90J1ViI8O9cKMCYuzz6s_ot8z9Ev5uAU6LAOCba6F-zfA-gdFZ6nYQtNFJsT6xaCHnS6Q&lib=MVMDOPGYgqBB6nUmDWG5Pg1OLXT6IONTs';
+var PASSWORD  = 'sunrise2026';
+var SHEETDB   = 'https://sheetdb.io/api/v1/tthbr8ib4q8f8';
 
 // ══════════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════════
 var calY, calM, posts = {}, activeDate = null, activePid = null;
-var MONTHS = ['January','February','March','April','May','June',
-              'July','August','September','October','November','December'];
-var DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 // ══════════════════════════════════════════════
-//  DATE HELPERS
+//  HELPERS
 // ══════════════════════════════════════════════
-function pad(n) { return String(n).padStart(2,'0'); }
-function toKey(y,m,d) { return y+'-'+pad(m+1)+'-'+pad(d); }
-function parseKey(k) { var p=k.split('-'); return {y:+p[0],m:+p[1]-1,d:+p[2]}; }
-function fmtKey(k) { var p=parseKey(k); return MONTHS[p.m]+' '+p.d+', '+p.y; }
-function fmtShort(k) { var p=parseKey(k); return MONTHS[p.m].slice(0,3)+' '+p.d; }
-function todayKey() { var n=new Date(); return toKey(n.getFullYear(),n.getMonth(),n.getDate()); }
-function daysInMonth(y,m) { return new Date(y,m+1,0).getDate(); }
-function firstDay(y,m) { return new Date(y,m,1).getDay(); }
-function weekOf(k) {
-  var p=parseKey(k), base=new Date(p.y,p.m,p.d), dow=base.getDay(), days=[];
+function pad(n){return String(n).padStart(2,'0');}
+function toKey(y,m,d){return y+'-'+pad(m+1)+'-'+pad(d);}
+function parseKey(k){var p=k.split('-');return{y:+p[0],m:+p[1]-1,d:+p[2]};}
+function fmtKey(k){var p=parseKey(k);return MONTHS[p.m]+' '+p.d+', '+p.y;}
+function fmtShort(k){var p=parseKey(k);return MONTHS[p.m].slice(0,3)+' '+p.d;}
+function todayKey(){var n=new Date();return toKey(n.getFullYear(),n.getMonth(),n.getDate());}
+function daysInMonth(y,m){return new Date(y,m+1,0).getDate();}
+function firstDay(y,m){return new Date(y,m,1).getDay();}
+function weekOf(k){
+  var p=parseKey(k),base=new Date(p.y,p.m,p.d),dow=base.getDay(),days=[];
   for(var i=0;i<7;i++){var d=new Date(base);d.setDate(base.getDate()-dow+i);days.push(toKey(d.getFullYear(),d.getMonth(),d.getDate()));}
   return days;
 }
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 // ══════════════════════════════════════════════
 //  FLASH
 // ══════════════════════════════════════════════
-var flashTimer;
+var ft;
 function showFlash(msg,isErr){
   var el=document.getElementById('flash');
-  el.textContent=msg; el.className=isErr?'err':''; el.style.display='block';
-  clearTimeout(flashTimer);
-  flashTimer=setTimeout(function(){el.style.display='none';},3200);
+  el.textContent=msg;el.className=isErr?'err':'';el.style.display='block';
+  clearTimeout(ft);ft=setTimeout(function(){el.style.display='none';},3200);
 }
 
 // ══════════════════════════════════════════════
@@ -590,12 +283,8 @@ function showFlash(msg,isErr){
 // ══════════════════════════════════════════════
 function openModal(id){document.getElementById(id).style.display='flex';}
 function closeModal(id){document.getElementById(id).style.display='none';}
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape')['madd','mview','mcov','mswp'].forEach(closeModal);
-});
-function chkBtn(inp,btn){
-  document.getElementById(btn).disabled=!document.getElementById(inp).value.trim();
-}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')['madd','mview','mcov','mswp'].forEach(closeModal);});
+function chkBtn(i,b){document.getElementById(b).disabled=!document.getElementById(i).value.trim();}
 function chkSwp(){
   var n=document.getElementById('swp_name').value.trim();
   var d=document.getElementById('swp_date').value;
@@ -607,142 +296,114 @@ function chkSwp(){
 // ══════════════════════════════════════════════
 function doLogin(){
   if(!document.getElementById('dcheck').checked){
-    document.getElementById('pwerr').textContent='Please confirm the disclaimer first.';
-    return;
+    document.getElementById('pwerr').textContent='Please confirm the disclaimer first.';return;
   }
-  var pw=document.getElementById('pwinput').value;
-  if(pw!==PASSWORD){
-    document.getElementById('pwerr').textContent='Wrong password. Try again.';
-    return;
+  if(document.getElementById('pwinput').value!==PASSWORD){
+    document.getElementById('pwerr').textContent='Wrong password. Try again.';return;
   }
   document.getElementById('login').style.display='none';
   document.getElementById('board').style.display='block';
   init();
 }
-document.getElementById('pwinput').addEventListener('keydown',function(e){
-  if(e.key==='Enter') doLogin();
-});
+document.getElementById('pwinput').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
 
 // ══════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════
 function init(){
-  var n=new Date(); calY=n.getFullYear(); calM=n.getMonth();
+  var n=new Date();calY=n.getFullYear();calM=n.getMonth();
   fetchAndRender(null);
 }
 
 // ══════════════════════════════════════════════
-//  FETCH DATA FROM GOOGLE SHEETS REST API
+//  FETCH FROM SHEETDB
 // ══════════════════════════════════════════════
-function fetchSheet(sheetName, callback){
-  var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+
-          '/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(sheetName);
-  fetch(url)
-    .then(function(r){return r.text();})
-    .then(function(text){
-      // Google wraps response in /*O_o*/ google.visualization.Query.setResponse({...});
-      var json=text.replace(/^[^(]+\(/,'').replace(/\);?\s*$/,'');
-      var data=JSON.parse(json);
-      var rows=[];
-      if(data.table && data.table.rows){
-        var cols=data.table.cols.map(function(c){return c.label;});
-        data.table.rows.forEach(function(row){
-          var obj={};
-          row.c.forEach(function(cell,i){
-            obj[cols[i]]=cell?cell.v:'';
-          });
-          rows.push(obj);
-        });
-      }
-      callback(null,rows);
-    })
-    .catch(function(e){callback(e,null);});
-}
-
 function fetchAndRender(callback){
   document.getElementById('loadbar').style.display='block';
   document.getElementById('cgrid').style.opacity='0.4';
 
-  // Fetch posts
-  fetchSheet('Posts',function(err,postRows){
-    if(err){
-      document.getElementById('loadbar').style.display='none';
-      document.getElementById('cgrid').style.opacity='1';
-      showFlash('Could not load data.',true);
-      renderCal();
-      return;
-    }
+  // Fetch Posts sheet
+  fetch(SHEETDB+'?sheet=Posts')
+    .then(function(r){return r.json();})
+    .then(function(postRows){
+      // Fetch Offers sheet
+      return fetch(SHEETDB+'?sheet=Offers')
+        .then(function(r){return r.json();})
+        .then(function(offerRows){
+          posts={};
 
-    // Fetch offers
-    fetchSheet('Offers',function(err2,offerRows){
-      document.getElementById('loadbar').style.display='none';
-      document.getElementById('cgrid').style.opacity='1';
+          // Build posts
+          postRows.forEach(function(r){
+            var dk=String(r.dateKey||'').trim();
+            if(!dk||!r.id) return;
+            if(!posts[dk]) posts[dk]=[];
+            posts[dk].push({
+              id:String(r.id),
+              dateKey:dk,
+              name:String(r.name||''),
+              note:String(r.note||''),
+              offers:[]
+            });
+          });
 
-      posts={};
-
-      // Build posts map
-      postRows.forEach(function(r){
-        if(!r.id && !r.dateKey) return;
-        var dk=String(r.dateKey||'').trim();
-        if(!dk) return;
-        if(!posts[dk]) posts[dk]=[];
-        posts[dk].push({
-          id: String(r.id||''),
-          dateKey: dk,
-          name: String(r.name||''),
-          note: String(r.note||''),
-          offers: []
-        });
-      });
-
-      // Attach offers
-      if(!err2 && offerRows){
-        offerRows.forEach(function(o){
-          if(!o.id) return;
-          var pid=String(o.postId||'').trim();
-          var dk2=String(o.dateKey||'').trim();
-          if(!posts[dk2]) return;
-          for(var k=0;k<posts[dk2].length;k++){
-            if(posts[dk2][k].id===pid){
-              posts[dk2][k].offers.push({
-                id: String(o.id||''),
-                name: String(o.offererName||o.name||''),
-                type: String(o.type||'cover'),
-                swapDate: String(o.swapDate||'')
-              });
-              break;
+          // Attach offers
+          offerRows.forEach(function(o){
+            if(!o.id) return;
+            var pid=String(o.postId||'').trim();
+            var dk2=String(o.dateKey||'').trim();
+            if(!posts[dk2]) return;
+            for(var k=0;k<posts[dk2].length;k++){
+              if(posts[dk2][k].id===pid){
+                posts[dk2][k].offers.push({
+                  id:String(o.id),
+                  name:String(o.offererName||''),
+                  type:String(o.type||'cover'),
+                  swapDate:String(o.swapDate||'')
+                });
+                break;
+              }
             }
-          }
-        });
-      }
+          });
 
+          document.getElementById('loadbar').style.display='none';
+          document.getElementById('cgrid').style.opacity='1';
+          renderCal();
+          if(typeof callback==='function') callback();
+        });
+    })
+    .catch(function(e){
+      document.getElementById('loadbar').style.display='none';
+      document.getElementById('cgrid').style.opacity='1';
+      showFlash('Could not load data: '+e.message,true);
       renderCal();
-      if(typeof callback==='function') callback();
     });
-  });
 }
 
 // ══════════════════════════════════════════════
-//  WRITE via Apps Script proxy
+//  SHEETDB WRITE HELPERS
 // ══════════════════════════════════════════════
-function writeToSheet(action, data, callback){
-  // If no proxy URL set, fall back to alert
-  if(!PROXY_URL || PROXY_URL==='https://script.google.com/macros/s/AKfycbywtn1c4usTgQ5ZikmcYcLPTIPMFZkMMQTxziwf96qqq04BLYHZXou30qOC6_LvFZ0SMg/exec'){
-    // No proxy — store locally only (demo mode)
-    callback(null,{ok:true,id:String(Date.now())});
-    return;
-  }
-  fetch(PROXY_URL,{
+function dbPost(sheet, data, cb){
+  fetch(SHEETDB+'?sheet='+sheet,{
     method:'POST',
-    body: JSON.stringify({action:action,data:data})
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({data:data})
   })
   .then(function(r){return r.json();})
-  .then(function(res){callback(null,res);})
-  .catch(function(e){callback(e,null);});
+  .then(function(res){cb(null,res);})
+  .catch(function(e){cb(e,null);});
+}
+
+function dbDelete(sheet, col, val, cb){
+  fetch(SHEETDB+'/'+col+'/'+encodeURIComponent(val)+'?sheet='+sheet,{
+    method:'DELETE'
+  })
+  .then(function(r){return r.json();})
+  .then(function(res){cb(null,res);})
+  .catch(function(e){cb(e,null);});
 }
 
 // ══════════════════════════════════════════════
-//  CALENDAR RENDER
+//  CALENDAR
 // ══════════════════════════════════════════════
 function chMonth(dir){
   calM+=dir;
@@ -753,67 +414,49 @@ function chMonth(dir){
 
 function renderCal(){
   document.getElementById('mlabel').textContent=MONTHS[calM]+' '+calY;
-  var g=document.getElementById('cgrid');
-  g.innerHTML='';
+  var g=document.getElementById('cgrid');g.innerHTML='';
   var tk=todayKey();
-
-  DAYS.forEach(function(d){
-    var el=document.createElement('div');
-    el.className='dhdr'; el.textContent=d; g.appendChild(el);
-  });
-
-  var fd=firstDay(calY,calM), dim=daysInMonth(calY,calM);
-  for(var i=0;i<fd;i++){
-    var b=document.createElement('div'); b.className='ccell blank'; g.appendChild(b);
-  }
-
+  DAYS.forEach(function(d){var el=document.createElement('div');el.className='dhdr';el.textContent=d;g.appendChild(el);});
+  var fd=firstDay(calY,calM),dim=daysInMonth(calY,calM);
+  for(var i=0;i<fd;i++){var b=document.createElement('div');b.className='ccell blank';g.appendChild(b);}
   for(var day=1;day<=dim;day++){
     (function(d){
       var key=toKey(calY,calM,d);
       var dp=posts[key]||[];
-      var isToday=key===tk, isPast=key<tk;
-      var has=dp.length>0;
+      var isToday=key===tk,isPast=key<tk,has=dp.length>0;
       var allCov=has&&dp.every(function(p){return p.offers&&p.offers.length>0;});
-
-      var cell=document.createElement('div'); cell.className='ccell';
-      if(isToday) cell.classList.add('today');
-      if(isPast)  cell.classList.add('past');
-      if(has&&!allCov) cell.classList.add('needs');
-      if(allCov) cell.classList.add('covered');
-      if(!isPast) cell.classList.add('fut');
-
-      var num=document.createElement('span'); num.className='dnum'; num.textContent=d;
-      cell.appendChild(num);
-
+      var cell=document.createElement('div');cell.className='ccell';
+      if(isToday)cell.classList.add('today');
+      if(isPast)cell.classList.add('past');
+      if(has&&!allCov)cell.classList.add('needs');
+      if(allCov)cell.classList.add('covered');
+      if(!isPast)cell.classList.add('fut');
+      var num=document.createElement('span');num.className='dnum';num.textContent=d;cell.appendChild(num);
       if(has){
         dp.forEach(function(p){
-          var pill=document.createElement('div'); pill.className='pill';
+          var pill=document.createElement('div');pill.className='pill';
           var cov=p.offers&&p.offers.length>0;
           pill.style.background=cov?'rgba(22,163,74,0.13)':'rgba(29,78,216,0.13)';
           pill.style.borderColor=cov?'rgba(34,197,94,0.4)':'rgba(59,130,246,0.4)';
-          var txt=document.createElement('span'); txt.className='ptxt'; txt.textContent=p.name;
-          pill.appendChild(txt);
+          var txt=document.createElement('span');txt.className='ptxt';txt.textContent=p.name;pill.appendChild(txt);
           if(cov){var chk=document.createElement('span');chk.className='pchk';chk.textContent='\u2713';pill.appendChild(chk);}
           cell.appendChild(pill);
         });
       } else if(!isPast){
-        var ph=document.createElement('div'); ph.className='plushint'; ph.textContent='+';
-        cell.appendChild(ph);
+        var ph=document.createElement('div');ph.className='plushint';ph.textContent='+';cell.appendChild(ph);
       }
-
-      if(!isPast) cell.addEventListener('click',function(){clickDay(key);});
+      if(!isPast)cell.addEventListener('click',function(){clickDay(key);});
       g.appendChild(cell);
     })(day);
   }
 }
 
 // ══════════════════════════════════════════════
-//  DAY INTERACTIONS
+//  DAY CLICK
 // ══════════════════════════════════════════════
 function clickDay(key){
   activeDate=key;
-  var dp=posts[key]||[];
-  if(dp.length>0) openView(key);
+  if((posts[key]||[]).length>0) openView(key);
   else openAdd(key);
 }
 
@@ -826,28 +469,20 @@ function openAdd(key){
   openModal('madd');
   setTimeout(function(){document.getElementById('add_name').focus();},120);
 }
-function addFromView(){ closeModal('mview'); openAdd(activeDate); }
+function addFromView(){closeModal('mview');openAdd(activeDate);}
 
 function submitReq(){
   var name=document.getElementById('add_name').value.trim();
   var note=document.getElementById('add_note').value.trim();
   if(!name) return;
   var btn=document.getElementById('add_go');
-  btn.disabled=true; btn.textContent='Saving\u2026';
-
+  btn.disabled=true;btn.textContent='Saving\u2026';
   var id=String(Date.now());
-  var newPost={id:id, dateKey:activeDate, name:name, note:note, offers:[]};
-
-  // Optimistic update
-  if(!posts[activeDate]) posts[activeDate]=[];
-  posts[activeDate].push(newPost);
-  renderCal();
-
-  writeToSheet('addPost',{id:id, dateKey:activeDate, name:name, note:note},function(err,res){
-    btn.disabled=false; btn.textContent='Post Request';
+  dbPost('Posts',{id:id,dateKey:activeDate,name:name,note:note,created:new Date().toISOString()},function(err){
+    btn.disabled=false;btn.textContent='Post Request';
+    if(err){showFlash('Error saving.',true);return;}
     closeModal('madd');
     showFlash('\u2713 Request posted for '+fmtKey(activeDate));
-    // Refresh from sheet to get authoritative data
     fetchAndRender(function(){openView(activeDate);});
   });
 }
@@ -855,73 +490,54 @@ function submitReq(){
 // ── View Day ─────────────────────────────────
 function openView(key){
   document.getElementById('view_lbl').textContent=fmtKey(key);
-  buildView(key);
-  openModal('mview');
+  buildView(key);openModal('mview');
 }
 
 function buildView(key){
-  var c=document.getElementById('view_body'); c.innerHTML='';
+  var c=document.getElementById('view_body');c.innerHTML='';
   var dp=posts[key]||[];
   if(!dp.length){closeModal('mview');return;}
-
   dp.forEach(function(post){
-    var card=document.createElement('div'); card.className='pcard';
-
-    // Top row
-    var top=document.createElement('div'); top.className='pctop';
+    var card=document.createElement('div');card.className='pcard';
+    var top=document.createElement('div');top.className='pctop';
     var info=document.createElement('div');
-    var nameEl=document.createElement('div'); nameEl.className='pname'; nameEl.textContent=post.name;
-    info.appendChild(nameEl);
-    if(post.note){var noteEl=document.createElement('div');noteEl.className='pnote';noteEl.textContent=post.note;info.appendChild(noteEl);}
-    var xb=document.createElement('button'); xb.className='xb'; xb.textContent='\u00d7';
+    var ne=document.createElement('div');ne.className='pname';ne.textContent=post.name;info.appendChild(ne);
+    if(post.note){var no=document.createElement('div');no.className='pnote';no.textContent=post.note;info.appendChild(no);}
+    var xb=document.createElement('button');xb.className='xb';xb.textContent='\u00d7';
     (function(pid){xb.onclick=function(){delReq(key,pid);};})(post.id);
-    top.appendChild(info); top.appendChild(xb); card.appendChild(top);
+    top.appendChild(info);top.appendChild(xb);card.appendChild(top);
 
-    // Offers
     if(post.offers&&post.offers.length>0){
-      var ohdr=document.createElement('div'); ohdr.className='ohdr';
-      ohdr.textContent='Coverage offers ('+post.offers.length+'):';
-      card.appendChild(ohdr);
-
+      var oh=document.createElement('div');oh.className='ohdr';
+      oh.textContent='Coverage offers ('+post.offers.length+'):';card.appendChild(oh);
       post.offers.forEach(function(o){
-        var row=document.createElement('div'); row.className='orow';
-
+        var row=document.createElement('div');row.className='orow';
         var badge=document.createElement('span');
         badge.className='obadge '+(o.type==='swap'?'bswp':'bcov');
         badge.textContent=o.type==='swap'?'\u21c4 SWAP':'\u2713 PRN/OT';
-
-        var oname=document.createElement('span'); oname.className='oname'; oname.textContent=o.name;
-
-        var xo=document.createElement('button'); xo.className='xbs'; xo.textContent='\u00d7';
+        var oname=document.createElement('span');oname.className='oname';oname.textContent=o.name;
+        var xo=document.createElement('button');xo.className='xbs';xo.textContent='\u00d7';
         (function(oid){xo.onclick=function(){delOff(key,oid);};})(o.id);
-
-        row.appendChild(badge); row.appendChild(oname);
-
+        row.appendChild(badge);row.appendChild(oname);
         if(o.type==='swap'&&o.swapDate){
-          var sd=document.createElement('span'); sd.className='oswp';
-          sd.textContent='\u2194 needs '+o.swapDate+' covered';
-          row.appendChild(sd);
+          var sd=document.createElement('span');sd.className='oswp';
+          sd.textContent='\u2194 needs '+o.swapDate+' covered';row.appendChild(sd);
         }
-        row.appendChild(xo);
-        card.appendChild(row);
+        row.appendChild(xo);card.appendChild(row);
       });
     } else {
-      var no=document.createElement('div'); no.className='no-offers';
-      no.textContent='No coverage offers yet \u2014 be the first!';
-      card.appendChild(no);
+      var noo=document.createElement('div');noo.className='no-offers';
+      noo.textContent='No coverage offers yet \u2014 be the first!';card.appendChild(noo);
     }
 
-    // Action buttons
-    var arow=document.createElement('div'); arow.className='arow';
-    var covBtn=document.createElement('button'); covBtn.className='covbtn';
-    covBtn.textContent="\u2713 I'll Cover (PRN / OT)";
-    var swpBtn=document.createElement('button'); swpBtn.className='swpbtn';
-    swpBtn.textContent='\u21c4 Offer a Swap';
+    var ar=document.createElement('div');ar.className='arow';
+    var cb=document.createElement('button');cb.className='covbtn';cb.textContent="\u2713 I'll Cover (PRN / OT)";
+    var sb=document.createElement('button');sb.className='swpbtn';sb.textContent='\u21c4 Offer a Swap';
     (function(pid){
-      covBtn.onclick=function(){openCov(key,pid);};
-      swpBtn.onclick=function(){openSwp(key,pid);};
+      cb.onclick=function(){openCov(key,pid);};
+      sb.onclick=function(){openSwp(key,pid);};
     })(post.id);
-    arow.appendChild(covBtn); arow.appendChild(swpBtn); card.appendChild(arow);
+    ar.appendChild(cb);ar.appendChild(sb);card.appendChild(ar);
     c.appendChild(card);
   });
 }
@@ -929,40 +545,40 @@ function buildView(key){
 // ── Delete Request ───────────────────────────
 function delReq(key,pid){
   if(!confirm('Remove this request and all its offers?')) return;
-  if(posts[key]) posts[key]=posts[key].filter(function(p){return p.id!==pid;});
-  if(posts[key]&&posts[key].length===0) delete posts[key];
-  renderCal(); closeModal('mview');
-  writeToSheet('deletePost',{id:pid},function(){
-    showFlash('Request removed.');
-    fetchAndRender(null);
+  dbDelete('Posts','id',pid,function(){
+    // Also delete offers for this post
+    dbDelete('Offers','postId',pid,function(){
+      showFlash('Request removed.');
+      closeModal('mview');
+      fetchAndRender(null);
+    });
   });
 }
 
 // ── Cover Offer ──────────────────────────────
 function openCov(key,pid){
-  activeDate=key; activePid=pid;
+  activeDate=key;activePid=pid;
   document.getElementById('cov_name').value='';
   document.getElementById('cov_go').disabled=true;
-  closeModal('mview'); openModal('mcov');
+  closeModal('mview');openModal('mcov');
   setTimeout(function(){document.getElementById('cov_name').focus();},120);
 }
 
 // ── Swap Offer ───────────────────────────────
 function openSwp(key,pid){
-  activeDate=key; activePid=pid;
+  activeDate=key;activePid=pid;
   document.getElementById('swp_name').value='';
   document.getElementById('swp_date').value='';
   document.getElementById('swp_go').disabled=true;
-
-  var tk=todayKey(), wk=weekOf(key);
-  var g=document.getElementById('wgrid'); g.innerHTML='';
+  var tk=todayKey(),wk=weekOf(key);
+  var g=document.getElementById('wgrid');g.innerHTML='';
   wk.forEach(function(wkKey){
-    var p=parseKey(wkKey), dow=new Date(p.y,p.m,p.d).getDay();
-    var btn=document.createElement('button'); btn.className='wbtn';
-    var dn=document.createElement('span'); dn.className='wdn'; dn.textContent=DAYS[dow];
-    var dd=document.createElement('span'); dd.className='wdd'; dd.textContent=p.d;
-    btn.appendChild(dn); btn.appendChild(dd);
-    if(wkKey<tk){ btn.disabled=true; }
+    var p=parseKey(wkKey),dow=new Date(p.y,p.m,p.d).getDay();
+    var btn=document.createElement('button');btn.className='wbtn';
+    var dn=document.createElement('span');dn.className='wdn';dn.textContent=DAYS[dow];
+    var dd=document.createElement('span');dd.className='wdd';dd.textContent=p.d;
+    btn.appendChild(dn);btn.appendChild(dd);
+    if(wkKey<tk){btn.disabled=true;}
     else{
       (function(wk2){
         btn.onclick=function(){
@@ -975,8 +591,7 @@ function openSwp(key,pid){
     }
     g.appendChild(btn);
   });
-
-  closeModal('mview'); openModal('mswp');
+  closeModal('mview');openModal('mswp');
   setTimeout(function(){document.getElementById('swp_name').focus();},120);
 }
 
@@ -984,35 +599,20 @@ function openSwp(key,pid){
 function subOffer(type){
   var name,swapDate='';
   if(type==='cover'){
-    name=document.getElementById('cov_name').value.trim();
-    if(!name) return;
+    name=document.getElementById('cov_name').value.trim();if(!name)return;
   } else {
     name=document.getElementById('swp_name').value.trim();
     swapDate=document.getElementById('swp_date').value;
-    if(!name||!swapDate) return;
+    if(!name||!swapDate)return;
   }
-
   var btnId=type==='cover'?'cov_go':'swp_go';
   var btn=document.getElementById(btnId);
-  btn.disabled=true; btn.textContent='Saving\u2026';
-
+  btn.disabled=true;btn.textContent='Saving\u2026';
   var oid=String(Date.now());
-  // Optimistic update
-  var dp=posts[activeDate]||[];
-  for(var k=0;k<dp.length;k++){
-    if(dp[k].id===activePid){
-      dp[k].offers.push({id:oid,name:name,type:type,swapDate:swapDate});
-      break;
-    }
-  }
-  renderCal();
-
-  writeToSheet('addOffer',{
-    id:oid, postId:activePid, dateKey:activeDate,
-    offererName:name, type:type, swapDate:swapDate
-  },function(){
-    btn.disabled=false; btn.textContent=type==='cover'?'Submit':'Submit Swap';
-    closeModal('mcov'); closeModal('mswp');
+  dbPost('Offers',{id:oid,postId:activePid,dateKey:activeDate,offererName:name,type:type,swapDate:swapDate,created:new Date().toISOString()},function(err){
+    btn.disabled=false;btn.textContent=type==='cover'?'Submit':'Submit Swap';
+    if(err){showFlash('Error saving offer.',true);return;}
+    closeModal('mcov');closeModal('mswp');
     showFlash(type==='swap'?'\u2713 Swap offered!':'\u2713 Cover offer submitted!');
     fetchAndRender(function(){openView(activeDate);});
   });
@@ -1020,10 +620,7 @@ function subOffer(type){
 
 // ── Delete Offer ─────────────────────────────
 function delOff(key,oid){
-  var dp=posts[key]||[];
-  dp.forEach(function(p){p.offers=p.offers.filter(function(o){return o.id!==oid;});});
-  renderCal();
-  writeToSheet('deleteOffer',{id:oid},function(){
+  dbDelete('Offers','id',oid,function(){
     fetchAndRender(function(){openView(key);});
   });
 }
