@@ -727,7 +727,7 @@ function fetchAndRender(callback){
 // ══════════════════════════════════════════════
 function writeToSheet(action, data, callback){
   // If no proxy URL set, fall back to alert
-  if(!PROXY_URL || PROXY_URL==='YOUR_APPS_SCRIPT_URL_HERE'){
+  if(!PROXY_URL || PROXY_URL==='https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSA5QE1NY9w7tnzjGLkhW9H7Q8Fb8-FmRi7zefazY0mg1FWm8PK3pCYnZgk7UaWDXZKKnCmRB3TokXgmv13nmBS9pOq13UPp2mTD8Kvnze_jG_Nln-6wPhp3c4VAzKkhPAgofKA91RIXtC39JmWg9PDaJ6XHpieXzC20s-N3L6Z2_P_Zwt1UlSZAO01LmdRzX0CmzTWyZxWHeTrjuV9egTJR90J1ViI8O9cKMCYuzz6s_ot8z9Ev5uAU6LAOCba6F-zfA-gdFZ6nYQtNFJsT6xaCHnS6Q&lib=MVMDOPGYgqBB6nUmDWG5Pg1OLXT6IONTs'){
     // No proxy — store locally only (demo mode)
     callback(null,{ok:true,id:String(Date.now())});
     return;
