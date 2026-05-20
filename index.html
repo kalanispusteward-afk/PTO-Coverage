@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shift Coverage Board</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0f172a;
+  color: #f1f5f9;
+  font-family: Georgia, serif;
+  min-height: 100vh;
+}
+button { font-family: inherit; cursor: pointer; }
+input, select { font-family: inherit; }
+
+/* ── LOGIN ── */
+#login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.lcard {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 40px 32px;
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+}
+.licon { font-size: 48px; margin-bottom: 10px; }
+.ltitle { font-size: 22px; font-weight: normal; color: #f1f5f9; margin-bottom: 6px; }
+.lsub { font-size: 14px; color: #64748b; margin-bottom: 24px; }
+.discbox {
+  background: #0f172a;
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  text-align: left;
+}
+.disclabel {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.65;
+}
+#dcheck { accent-color: #f59e0b; width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; }
+#pwinput {
+  display: block;
+  width: 100%;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 9px;
+  padding: 13px 16px;
+  color: #f1f5f9;
+  font-size: 16px;
+  letter-spacing: 6px;
+  text-align: center;
+  outline: none;
+  margin-bottom: 10px;
+}
+#pwerr { color: #f87171; font-size: 13px; min-height: 20px; margin-bottom: 6px; }
+.lbtn {
+  display: block;
+  width: 100%;
+  background: #3b82f6;
+  border: none;
+  border-radius: 9px;
+  padding: 13px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.lbtn:hover { background: #2563eb; }
+.lbtn:disabled { background: #1e3a5f; color: #475569; cursor: not-allowed; }
+
+/* ── BOARD ── */
+#board { display: none; }
+.topbar {
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.btitle { font-size: 18px; color: #f1f5f9; }
+.bsub { font-size: 12px; color: #64748b; margin-top: 3px; }
+.legend { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ldot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.ltxt { font-size: 12px; color: #94a3b8; margin-right: 8px; }
+.mnav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 18px 16px 8px;
+}
+.nbtn {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  font-size: 24px;
+  width: 42px; height: 42px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nbtn:hover { background: #293548; }
+.mlabel { font-size: 20px; font-weight: normal; min-width: 200px; text-align: center; }
+.chint { text-align: center; color: #475569; font-size: 13px; margin-bottom: 10px; }
+#loadbar { text-align: center; padding: 30px; color: #64748b; font-size: 14px; display: none; }
+.spin {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid #334155;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── CALENDAR ── */
+.cgrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  padding: 0 8px;
+  max-width: 740px;
+  margin: 0 auto;
+}
+.dhdr {
+  text-align: center;
+  font-size: 11px;
+  color: #475569;
+  padding: 2px 0 8px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+}
+.ccell {
+  min-height: 76px;
+  background: #1e293b;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  padding: 5px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.12s, background 0.12s;
+}
+.ccell.fut { cursor: pointer; }
+.ccell.fut:hover { border-color: #334155; background: #243047; }
+.ccell.today { border: 2px solid #3b82f6 !important; background: #1e3a5f; }
+.ccell.past { background: #151e2d; opacity: 0.45; }
+.ccell.needs { border-color: rgba(59,130,246,0.5); }
+.ccell.covered { border-color: rgba(34,197,94,0.5); background: #14231d; }
+.ccell.blank { background: transparent; border-color: transparent; }
+.dnum { font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 3px; display: block; }
+.ccell.today .dnum { color: #60a5fa; }
+.plushint { font-size: 18px; color: #334155; text-align: center; width: 100%; margin-top: 4px; opacity: 0.7; }
+.pill {
+  border-radius: 4px;
+  border: 1px solid;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3px;
+  margin-bottom: 2px;
+}
+.ptxt { font-size: 9px; color: #cbd5e1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 54px; }
+.pchk { font-size: 9px; color: #22c55e; flex-shrink: 0; }
+
+/* ── FLASH ── */
+#flash {
+  position: fixed;
+  top: 14px; left: 50%;
+  transform: translateX(-50%);
+  background: #16a34a;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 9999;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  white-space: nowrap;
+  display: none;
+}
+#flash.err { background: #dc2626; }
+
+/* ── OVERLAYS ── */
+.obg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.obox {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 28px 22px 22px;
+  max-width: 440px;
+  width: 100%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.ocls {
+  position: absolute;
+  top: 12px; right: 14px;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 22px;
+  line-height: 1;
+}
+.ocls:hover { color: #94a3b8; }
+.odate { font-size: 18px; color: #f1f5f9; font-weight: normal; margin-bottom: 4px; }
+.osub { font-size: 13px; color: #64748b; margin-bottom: 18px; }
+
+/* ── FORM FIELDS ── */
+.flbl {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 5px;
+  margin-top: 14px;
+}
+.finp {
+  display: block;
+  width: 100%;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 11px 13px;
+  color: #f1f5f9;
+  font-size: 14px;
+  outline: none;
+}
+.finp:focus { border-color: #3b82f6; }
+
+/* ── WEEK GRID ── */
+.wgrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 6px;
+}
+.wbtn {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 8px 2px;
+  color: #94a3b8;
+  font-size: 11px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: all 0.12s;
+}
+.wbtn:hover:not(:disabled) { border-color: #0d9488; color: #2dd4bf; }
+.wbtn.sel { background: rgba(13,148,136,0.15); border-color: #0d9488; color: #2dd4bf; font-weight: bold; }
+.wbtn:disabled { opacity: 0.3; cursor: not-allowed; }
+.wdn { font-size: 10px; }
+.wdd { font-size: 13px; font-weight: bold; }
+.snote { font-size: 12px; color: #475569; margin-top: 8px; line-height: 1.5; font-style: italic; }
+
+/* ── BUTTONS ── */
+.brow { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.ccbtn {
+  background: transparent;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #64748b;
+  font-size: 13px;
+}
+.ccbtn:hover { border-color: #475569; color: #94a3b8; }
+.sbtn {
+  background: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+}
+.sbtn:hover:not(:disabled) { background: #2563eb; }
+.sbtn:disabled { background: #1e3a5f; color: #475569; cursor: not-allowed; }
+
+/* ── DAY VIEW ── */
+.dvhdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ambtn {
+  background: #3b82f6;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 14px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+}
+.ambtn:hover { background: #2563eb; }
+.pcard {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.pctop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.pname { font-size: 16px; color: #f1f5f9; font-weight: bold; }
+.pnote { font-size: 12px; color: #64748b; margin-top: 2px; }
+.xb { background: transparent; border: none; color: #475569; font-size: 20px; padding: 0 4px; line-height: 1; }
+.xb:hover { color: #94a3b8; }
+.xbs { background: transparent; border: none; color: #475569; font-size: 14px; padding: 0 2px; }
+.xbs:hover { color: #94a3b8; }
+.ohdr {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+  margin-top: 10px;
+}
+.orow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 0;
+  border-bottom: 1px solid #1e293b;
+  flex-wrap: wrap;
+}
+.obadge {
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 4px;
+  padding: 3px 8px;
+  letter-spacing: 0.4px;
+  flex-shrink: 0;
+}
+.bcov { background: #1d4ed8; }
+.bswp { background: #0f766e; }
+.oname { font-size: 13px; color: #cbd5e1; flex: 1; }
+.oswp { font-size: 12px; color: #67e8f9; width: 100%; padding-left: 4px; }
+.arow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.covbtn {
+  flex: 1;
+  background: #1d4ed8;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  min-width: 130px;
+}
+.covbtn:hover { background: #1e40af; }
+.swpbtn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #0d9488;
+  border-radius: 8px;
+  padding: 12px 0;
+  color: #2dd4bf;
+  font-size: 13px;
+  font-weight: bold;
+  min-width: 130px;
+}
+.swpbtn:hover { background: rgba(13,148,136,0.1); }
+.no-offers {
+  font-size: 13px;
+  color: #475569;
+  font-style: italic;
+  margin: 8px 0 10px;
+}
+
+@media (max-width: 480px) {
+  .ccell { min-height: 58px; }
+  .ptxt { max-width: 36px; }
+  .obox { padding: 20px 14px 16px; }
+  .lcard { padding: 30px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="login">
+  <div class="lcard">
+    <div class="licon">&#128737;</div>
+    <h1 class="ltitle">Shift Coverage Board</h1>
+    <p class="lsub">Workers only &middot; Private &amp; confidential</p>
+    <div class="discbox">
+      <label class="disclabel">
+        <input type="checkbox" id="dcheck">
+        <span>By checking this box, I confirm that I am not in management,
+          not a lead, and I will not disclose the contents of this board
+          to management or supervisors.</span>
+      </label>
+    </div>
+    <input type="password" id="pwinput" placeholder="Board password" autocomplete="off">
+    <div id="pwerr"></div>
+    <button class="lbtn" id="lbtn" onclick="doLogin()">Enter Board &rarr;</button>
+  </div>
+</div>
+
+<!-- ═══ BOARD ═══ -->
+<div id="board">
+  <div id="flash"></div>
+  <div class="topbar">
+    <div>
+      <div class="btitle">&#128203; Coverage Board</div>
+      <div class="bsub">Tap any day to post a request or offer coverage</div>
+    </div>
+    <div class="legend">
+      <span class="ldot" style="background:#3b82f6"></span><span class="ltxt">Needs coverage</span>
+      <span class="ldot" style="background:#22c55e"></span><span class="ltxt">Covered</span>
+    </div>
+  </div>
+  <div class="mnav">
+    <button class="nbtn" onclick="chMonth(-1)">&#8249;</button>
+    <span class="mlabel" id="mlabel"></span>
+    <button class="nbtn" onclick="chMonth(1)">&#8250;</button>
+  </div>
+  <p class="chint">Tap any day to view requests or post your own</p>
+  <div id="loadbar"><span class="spin"></span>Loading schedule&hellip;</div>
+  <div class="cgrid" id="cgrid"></div>
+</div>
+
+<!-- ═══ MODAL: Add Request ═══ -->
+<div class="obg" id="madd" style="display:none" onclick="closeModal('madd')">
+  <div class="obox" onclick="event.stopPropagation()">
+    <button class="ocls" onclick="closeModal('madd')">&times;</button>
+    <div class="odate" id="add_lbl"></div>
+    <p class="osub">Who needs this day off?</p>
+    <label class="flbl">Your Name</label>
+    <input class="finp" id="add_name" placeholder="First &amp; last name" oninput="chkBtn('add_name','add_go')">
+    <label class="flbl">Shift / Notes <span style="color:#475569;text-transform:none">(optional)</span></label>
+    <input class="finp" id="add_note" placeholder="e.g. Day shift, PT, ICU&hellip;">
+    <div class="brow">
+      <button class="ccbtn" onclick="closeModal('madd')">Cancel</button>
+      <button class="sbtn" id="add_go" onclick="submitReq()" disabled>Post Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: View Day ═══ -->
+<div class="obg" id="mview" style="display:none" onclick="closeModal('mview')">
+  <div class="obox" onclick="event.stopPropagation()">
+    <button class="ocls" onclick="closeModal('mview')">&times;</button>
+    <div class="dvhdr">
+      <div class="odate" id="view_lbl"></div>
+      <button class="ambtn" onclick="addFromView()">+ Add My Request</button>
+    </div>
+    <div id="view_body"></div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Cover ═══ -->
+<div class="obg" id="mcov" style="display:none" onclick="closeModal('mcov')">
+  <div class="obox" onclick="event.stopPropagation()">
+    <button class="ocls" onclick="closeModal('mcov')">&times;</button>
+    <div class="odate">&#10003; Offer to Cover (PRN / OT)</div>
+    <p class="osub">You will pick up this shift as PRN or overtime &mdash; no swap needed.</p>
+    <label class="flbl">Your Name</label>
+    <input class="finp" id="cov_name" placeholder="First &amp; last name" oninput="chkBtn('cov_name','cov_go')">
+    <div class="brow">
+      <button class="ccbtn" onclick="closeModal('mcov')">Cancel</button>
+      <button class="sbtn" id="cov_go" onclick="subOffer('cover')" disabled>Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Swap ═══ -->
+<div class="obg" id="mswp" style="display:none" onclick="closeModal('mswp')">
+  <div class="obox" onclick="event.stopPropagation()">
+    <button class="ocls" onclick="closeModal('mswp')">&times;</button>
+    <div class="odate">&#8644; Offer a Swap</div>
+    <p class="osub">You cover their day &mdash; pick the day from that week you need covered in return.</p>
+    <label class="flbl">Your Name</label>
+    <input class="finp" id="swp_name" placeholder="First &amp; last name" oninput="chkSwp()">
+    <label class="flbl">Day you need covered &mdash; tap one (Sun&ndash;Sat)</label>
+    <div class="wgrid" id="wgrid"></div>
+    <input type="hidden" id="swp_date">
+    <p class="snote">&#128161; Tap any day from that week. Past days are grayed out.</p>
+    <div class="brow">
+      <button class="ccbtn" onclick="closeModal('mswp')">Cancel</button>
+      <button class="sbtn" id="swp_go" onclick="subOffer('swap')" disabled>Submit Swap</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  CONFIG — your Google Sheet
+// ══════════════════════════════════════════════
+var SHEET_ID   = '1t_ZMEg9gSpMGDcE82EaZv9Zs5xPixfMZ6RUcQ472t90';
+var API_KEY    = '';        // filled in below — see note
+var PASSWORD   = 'sunrise2026';
+
+// We use the Google Sheets REST API (public read) + a small
+// write proxy via Apps Script for writes.
+// For READS  → Google Sheets API v4 (no auth needed if sheet is public)
+// For WRITES → We store locally and sync, using a public Apps Script
+//              web app as a thin write proxy.
+//
+// ── WRITE PROXY URL ──────────────────────────────────────────
+// Since we still need Apps Script for writes, paste your
+// Apps Script URL here (the one ending in /exec).
+// The HTML page does all rendering — Apps Script just saves rows.
+var PROXY_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSA5QE1NY9w7tnzjGLkhW9H7Q8Fb8-FmRi7zefazY0mg1FWm8PK3pCYnZgk7UaWDXZKKnCmRB3TokXgmv13nmBS9pOq13UPp2mTD8Kvnze_jG_Nln-6wPhp3c4VAzKkhPAgofKA91RIXtC39JmWg9PDaJ6XHpieXzC20s-N3L6Z2_P_Zwt1UlSZAO01LmdRzX0CmzTWyZxWHeTrjuV9egTJR90J1ViI8O9cKMCYuzz6s_ot8z9Ev5uAU6LAOCba6F-zfA-gdFZ6nYQtNFJsT6xaCHnS6Q&lib=MVMDOPGYgqBB6nUmDWG5Pg1OLXT6IONTs';
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+var calY, calM, posts = {}, activeDate = null, activePid = null;
+var MONTHS = ['January','February','March','April','May','June',
+              'July','August','September','October','November','December'];
+var DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// ══════════════════════════════════════════════
+//  DATE HELPERS
+// ══════════════════════════════════════════════
+function pad(n) { return String(n).padStart(2,'0'); }
+function toKey(y,m,d) { return y+'-'+pad(m+1)+'-'+pad(d); }
+function parseKey(k) { var p=k.split('-'); return {y:+p[0],m:+p[1]-1,d:+p[2]}; }
+function fmtKey(k) { var p=parseKey(k); return MONTHS[p.m]+' '+p.d+', '+p.y; }
+function fmtShort(k) { var p=parseKey(k); return MONTHS[p.m].slice(0,3)+' '+p.d; }
+function todayKey() { var n=new Date(); return toKey(n.getFullYear(),n.getMonth(),n.getDate()); }
+function daysInMonth(y,m) { return new Date(y,m+1,0).getDate(); }
+function firstDay(y,m) { return new Date(y,m,1).getDay(); }
+function weekOf(k) {
+  var p=parseKey(k), base=new Date(p.y,p.m,p.d), dow=base.getDay(), days=[];
+  for(var i=0;i<7;i++){var d=new Date(base);d.setDate(base.getDate()-dow+i);days.push(toKey(d.getFullYear(),d.getMonth(),d.getDate()));}
+  return days;
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ══════════════════════════════════════════════
+//  FLASH
+// ══════════════════════════════════════════════
+var flashTimer;
+function showFlash(msg,isErr){
+  var el=document.getElementById('flash');
+  el.textContent=msg; el.className=isErr?'err':''; el.style.display='block';
+  clearTimeout(flashTimer);
+  flashTimer=setTimeout(function(){el.style.display='none';},3200);
+}
+
+// ══════════════════════════════════════════════
+//  MODALS
+// ══════════════════════════════════════════════
+function openModal(id){document.getElementById(id).style.display='flex';}
+function closeModal(id){document.getElementById(id).style.display='none';}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')['madd','mview','mcov','mswp'].forEach(closeModal);
+});
+function chkBtn(inp,btn){
+  document.getElementById(btn).disabled=!document.getElementById(inp).value.trim();
+}
+function chkSwp(){
+  var n=document.getElementById('swp_name').value.trim();
+  var d=document.getElementById('swp_date').value;
+  document.getElementById('swp_go').disabled=!n||!d;
+}
+
+// ══════════════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════════════
+function doLogin(){
+  if(!document.getElementById('dcheck').checked){
+    document.getElementById('pwerr').textContent='Please confirm the disclaimer first.';
+    return;
+  }
+  var pw=document.getElementById('pwinput').value;
+  if(pw!==PASSWORD){
+    document.getElementById('pwerr').textContent='Wrong password. Try again.';
+    return;
+  }
+  document.getElementById('login').style.display='none';
+  document.getElementById('board').style.display='block';
+  init();
+}
+document.getElementById('pwinput').addEventListener('keydown',function(e){
+  if(e.key==='Enter') doLogin();
+});
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+function init(){
+  var n=new Date(); calY=n.getFullYear(); calM=n.getMonth();
+  fetchAndRender(null);
+}
+
+// ══════════════════════════════════════════════
+//  FETCH DATA FROM GOOGLE SHEETS REST API
+// ══════════════════════════════════════════════
+function fetchSheet(sheetName, callback){
+  var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+
+          '/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(sheetName);
+  fetch(url)
+    .then(function(r){return r.text();})
+    .then(function(text){
+      // Google wraps response in /*O_o*/ google.visualization.Query.setResponse({...});
+      var json=text.replace(/^[^(]+\(/,'').replace(/\);?\s*$/,'');
+      var data=JSON.parse(json);
+      var rows=[];
+      if(data.table && data.table.rows){
+        var cols=data.table.cols.map(function(c){return c.label;});
+        data.table.rows.forEach(function(row){
+          var obj={};
+          row.c.forEach(function(cell,i){
+            obj[cols[i]]=cell?cell.v:'';
+          });
+          rows.push(obj);
+        });
+      }
+      callback(null,rows);
+    })
+    .catch(function(e){callback(e,null);});
+}
+
+function fetchAndRender(callback){
+  document.getElementById('loadbar').style.display='block';
+  document.getElementById('cgrid').style.opacity='0.4';
+
+  // Fetch posts
+  fetchSheet('Posts',function(err,postRows){
+    if(err){
+      document.getElementById('loadbar').style.display='none';
+      document.getElementById('cgrid').style.opacity='1';
+      showFlash('Could not load data.',true);
+      renderCal();
+      return;
+    }
+
+    // Fetch offers
+    fetchSheet('Offers',function(err2,offerRows){
+      document.getElementById('loadbar').style.display='none';
+      document.getElementById('cgrid').style.opacity='1';
+
+      posts={};
+
+      // Build posts map
+      postRows.forEach(function(r){
+        if(!r.id && !r.dateKey) return;
+        var dk=String(r.dateKey||'').trim();
+        if(!dk) return;
+        if(!posts[dk]) posts[dk]=[];
+        posts[dk].push({
+          id: String(r.id||''),
+          dateKey: dk,
+          name: String(r.name||''),
+          note: String(r.note||''),
+          offers: []
+        });
+      });
+
+      // Attach offers
+      if(!err2 && offerRows){
+        offerRows.forEach(function(o){
+          if(!o.id) return;
+          var pid=String(o.postId||'').trim();
+          var dk2=String(o.dateKey||'').trim();
+          if(!posts[dk2]) return;
+          for(var k=0;k<posts[dk2].length;k++){
+            if(posts[dk2][k].id===pid){
+              posts[dk2][k].offers.push({
+                id: String(o.id||''),
+                name: String(o.offererName||o.name||''),
+                type: String(o.type||'cover'),
+                swapDate: String(o.swapDate||'')
+              });
+              break;
+            }
+          }
+        });
+      }
+
+      renderCal();
+      if(typeof callback==='function') callback();
+    });
+  });
+}
+
+// ══════════════════════════════════════════════
+//  WRITE via Apps Script proxy
+// ══════════════════════════════════════════════
+function writeToSheet(action, data, callback){
+  // If no proxy URL set, fall back to alert
+  if(!PROXY_URL || PROXY_URL==='YOUR_APPS_SCRIPT_URL_HERE'){
+    // No proxy — store locally only (demo mode)
+    callback(null,{ok:true,id:String(Date.now())});
+    return;
+  }
+  fetch(PROXY_URL,{
+    method:'POST',
+    body: JSON.stringify({action:action,data:data})
+  })
+  .then(function(r){return r.json();})
+  .then(function(res){callback(null,res);})
+  .catch(function(e){callback(e,null);});
+}
+
+// ══════════════════════════════════════════════
+//  CALENDAR RENDER
+// ══════════════════════════════════════════════
+function chMonth(dir){
+  calM+=dir;
+  if(calM<0){calM=11;calY--;}
+  if(calM>11){calM=0;calY++;}
+  renderCal();
+}
+
+function renderCal(){
+  document.getElementById('mlabel').textContent=MONTHS[calM]+' '+calY;
+  var g=document.getElementById('cgrid');
+  g.innerHTML='';
+  var tk=todayKey();
+
+  DAYS.forEach(function(d){
+    var el=document.createElement('div');
+    el.className='dhdr'; el.textContent=d; g.appendChild(el);
+  });
+
+  var fd=firstDay(calY,calM), dim=daysInMonth(calY,calM);
+  for(var i=0;i<fd;i++){
+    var b=document.createElement('div'); b.className='ccell blank'; g.appendChild(b);
+  }
+
+  for(var day=1;day<=dim;day++){
+    (function(d){
+      var key=toKey(calY,calM,d);
+      var dp=posts[key]||[];
+      var isToday=key===tk, isPast=key<tk;
+      var has=dp.length>0;
+      var allCov=has&&dp.every(function(p){return p.offers&&p.offers.length>0;});
+
+      var cell=document.createElement('div'); cell.className='ccell';
+      if(isToday) cell.classList.add('today');
+      if(isPast)  cell.classList.add('past');
+      if(has&&!allCov) cell.classList.add('needs');
+      if(allCov) cell.classList.add('covered');
+      if(!isPast) cell.classList.add('fut');
+
+      var num=document.createElement('span'); num.className='dnum'; num.textContent=d;
+      cell.appendChild(num);
+
+      if(has){
+        dp.forEach(function(p){
+          var pill=document.createElement('div'); pill.className='pill';
+          var cov=p.offers&&p.offers.length>0;
+          pill.style.background=cov?'rgba(22,163,74,0.13)':'rgba(29,78,216,0.13)';
+          pill.style.borderColor=cov?'rgba(34,197,94,0.4)':'rgba(59,130,246,0.4)';
+          var txt=document.createElement('span'); txt.className='ptxt'; txt.textContent=p.name;
+          pill.appendChild(txt);
+          if(cov){var chk=document.createElement('span');chk.className='pchk';chk.textContent='\u2713';pill.appendChild(chk);}
+          cell.appendChild(pill);
+        });
+      } else if(!isPast){
+        var ph=document.createElement('div'); ph.className='plushint'; ph.textContent='+';
+        cell.appendChild(ph);
+      }
+
+      if(!isPast) cell.addEventListener('click',function(){clickDay(key);});
+      g.appendChild(cell);
+    })(day);
+  }
+}
+
+// ══════════════════════════════════════════════
+//  DAY INTERACTIONS
+// ══════════════════════════════════════════════
+function clickDay(key){
+  activeDate=key;
+  var dp=posts[key]||[];
+  if(dp.length>0) openView(key);
+  else openAdd(key);
+}
+
+// ── Add Request ──────────────────────────────
+function openAdd(key){
+  document.getElementById('add_lbl').textContent=fmtKey(key);
+  document.getElementById('add_name').value='';
+  document.getElementById('add_note').value='';
+  document.getElementById('add_go').disabled=true;
+  openModal('madd');
+  setTimeout(function(){document.getElementById('add_name').focus();},120);
+}
+function addFromView(){ closeModal('mview'); openAdd(activeDate); }
+
+function submitReq(){
+  var name=document.getElementById('add_name').value.trim();
+  var note=document.getElementById('add_note').value.trim();
+  if(!name) return;
+  var btn=document.getElementById('add_go');
+  btn.disabled=true; btn.textContent='Saving\u2026';
+
+  var id=String(Date.now());
+  var newPost={id:id, dateKey:activeDate, name:name, note:note, offers:[]};
+
+  // Optimistic update
+  if(!posts[activeDate]) posts[activeDate]=[];
+  posts[activeDate].push(newPost);
+  renderCal();
+
+  writeToSheet('addPost',{id:id, dateKey:activeDate, name:name, note:note},function(err,res){
+    btn.disabled=false; btn.textContent='Post Request';
+    closeModal('madd');
+    showFlash('\u2713 Request posted for '+fmtKey(activeDate));
+    // Refresh from sheet to get authoritative data
+    fetchAndRender(function(){openView(activeDate);});
+  });
+}
+
+// ── View Day ─────────────────────────────────
+function openView(key){
+  document.getElementById('view_lbl').textContent=fmtKey(key);
+  buildView(key);
+  openModal('mview');
+}
+
+function buildView(key){
+  var c=document.getElementById('view_body'); c.innerHTML='';
+  var dp=posts[key]||[];
+  if(!dp.length){closeModal('mview');return;}
+
+  dp.forEach(function(post){
+    var card=document.createElement('div'); card.className='pcard';
+
+    // Top row
+    var top=document.createElement('div'); top.className='pctop';
+    var info=document.createElement('div');
+    var nameEl=document.createElement('div'); nameEl.className='pname'; nameEl.textContent=post.name;
+    info.appendChild(nameEl);
+    if(post.note){var noteEl=document.createElement('div');noteEl.className='pnote';noteEl.textContent=post.note;info.appendChild(noteEl);}
+    var xb=document.createElement('button'); xb.className='xb'; xb.textContent='\u00d7';
+    (function(pid){xb.onclick=function(){delReq(key,pid);};})(post.id);
+    top.appendChild(info); top.appendChild(xb); card.appendChild(top);
+
+    // Offers
+    if(post.offers&&post.offers.length>0){
+      var ohdr=document.createElement('div'); ohdr.className='ohdr';
+      ohdr.textContent='Coverage offers ('+post.offers.length+'):';
+      card.appendChild(ohdr);
+
+      post.offers.forEach(function(o){
+        var row=document.createElement('div'); row.className='orow';
+
+        var badge=document.createElement('span');
+        badge.className='obadge '+(o.type==='swap'?'bswp':'bcov');
+        badge.textContent=o.type==='swap'?'\u21c4 SWAP':'\u2713 PRN/OT';
+
+        var oname=document.createElement('span'); oname.className='oname'; oname.textContent=o.name;
+
+        var xo=document.createElement('button'); xo.className='xbs'; xo.textContent='\u00d7';
+        (function(oid){xo.onclick=function(){delOff(key,oid);};})(o.id);
+
+        row.appendChild(badge); row.appendChild(oname);
+
+        if(o.type==='swap'&&o.swapDate){
+          var sd=document.createElement('span'); sd.className='oswp';
+          sd.textContent='\u2194 needs '+o.swapDate+' covered';
+          row.appendChild(sd);
+        }
+        row.appendChild(xo);
+        card.appendChild(row);
+      });
+    } else {
+      var no=document.createElement('div'); no.className='no-offers';
+      no.textContent='No coverage offers yet \u2014 be the first!';
+      card.appendChild(no);
+    }
+
+    // Action buttons
+    var arow=document.createElement('div'); arow.className='arow';
+    var covBtn=document.createElement('button'); covBtn.className='covbtn';
+    covBtn.textContent="\u2713 I'll Cover (PRN / OT)";
+    var swpBtn=document.createElement('button'); swpBtn.className='swpbtn';
+    swpBtn.textContent='\u21c4 Offer a Swap';
+    (function(pid){
+      covBtn.onclick=function(){openCov(key,pid);};
+      swpBtn.onclick=function(){openSwp(key,pid);};
+    })(post.id);
+    arow.appendChild(covBtn); arow.appendChild(swpBtn); card.appendChild(arow);
+    c.appendChild(card);
+  });
+}
+
+// ── Delete Request ───────────────────────────
+function delReq(key,pid){
+  if(!confirm('Remove this request and all its offers?')) return;
+  if(posts[key]) posts[key]=posts[key].filter(function(p){return p.id!==pid;});
+  if(posts[key]&&posts[key].length===0) delete posts[key];
+  renderCal(); closeModal('mview');
+  writeToSheet('deletePost',{id:pid},function(){
+    showFlash('Request removed.');
+    fetchAndRender(null);
+  });
+}
+
+// ── Cover Offer ──────────────────────────────
+function openCov(key,pid){
+  activeDate=key; activePid=pid;
+  document.getElementById('cov_name').value='';
+  document.getElementById('cov_go').disabled=true;
+  closeModal('mview'); openModal('mcov');
+  setTimeout(function(){document.getElementById('cov_name').focus();},120);
+}
+
+// ── Swap Offer ───────────────────────────────
+function openSwp(key,pid){
+  activeDate=key; activePid=pid;
+  document.getElementById('swp_name').value='';
+  document.getElementById('swp_date').value='';
+  document.getElementById('swp_go').disabled=true;
+
+  var tk=todayKey(), wk=weekOf(key);
+  var g=document.getElementById('wgrid'); g.innerHTML='';
+  wk.forEach(function(wkKey){
+    var p=parseKey(wkKey), dow=new Date(p.y,p.m,p.d).getDay();
+    var btn=document.createElement('button'); btn.className='wbtn';
+    var dn=document.createElement('span'); dn.className='wdn'; dn.textContent=DAYS[dow];
+    var dd=document.createElement('span'); dd.className='wdd'; dd.textContent=p.d;
+    btn.appendChild(dn); btn.appendChild(dd);
+    if(wkKey<tk){ btn.disabled=true; }
+    else{
+      (function(wk2){
+        btn.onclick=function(){
+          document.querySelectorAll('.wbtn').forEach(function(b){b.classList.remove('sel');});
+          btn.classList.add('sel');
+          document.getElementById('swp_date').value=fmtShort(wk2);
+          chkSwp();
+        };
+      })(wkKey);
+    }
+    g.appendChild(btn);
+  });
+
+  closeModal('mview'); openModal('mswp');
+  setTimeout(function(){document.getElementById('swp_name').focus();},120);
+}
+
+// ── Submit Offer ─────────────────────────────
+function subOffer(type){
+  var name,swapDate='';
+  if(type==='cover'){
+    name=document.getElementById('cov_name').value.trim();
+    if(!name) return;
+  } else {
+    name=document.getElementById('swp_name').value.trim();
+    swapDate=document.getElementById('swp_date').value;
+    if(!name||!swapDate) return;
+  }
+
+  var btnId=type==='cover'?'cov_go':'swp_go';
+  var btn=document.getElementById(btnId);
+  btn.disabled=true; btn.textContent='Saving\u2026';
+
+  var oid=String(Date.now());
+  // Optimistic update
+  var dp=posts[activeDate]||[];
+  for(var k=0;k<dp.length;k++){
+    if(dp[k].id===activePid){
+      dp[k].offers.push({id:oid,name:name,type:type,swapDate:swapDate});
+      break;
+    }
+  }
+  renderCal();
+
+  writeToSheet('addOffer',{
+    id:oid, postId:activePid, dateKey:activeDate,
+    offererName:name, type:type, swapDate:swapDate
+  },function(){
+    btn.disabled=false; btn.textContent=type==='cover'?'Submit':'Submit Swap';
+    closeModal('mcov'); closeModal('mswp');
+    showFlash(type==='swap'?'\u2713 Swap offered!':'\u2713 Cover offer submitted!');
+    fetchAndRender(function(){openView(activeDate);});
+  });
+}
+
+// ── Delete Offer ─────────────────────────────
+function delOff(key,oid){
+  var dp=posts[key]||[];
+  dp.forEach(function(p){p.offers=p.offers.filter(function(o){return o.id!==oid;});});
+  renderCal();
+  writeToSheet('deleteOffer',{id:oid},function(){
+    fetchAndRender(function(){openView(key);});
+  });
+}
+</script>
+</body>
+</html>
