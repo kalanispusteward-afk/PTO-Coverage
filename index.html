@@ -727,7 +727,7 @@ function fetchAndRender(callback){
 // ══════════════════════════════════════════════
 function writeToSheet(action, data, callback){
   // If no proxy URL set, fall back to alert
-  if(!PROXY_URL || PROXY_URL==='https://script.google.com/macros/s/AKfycbx0blar41PiU--as27U75tG54LVt1Vpszm1oF3vHYvTnBQk46a3DTcZFiaZzgdh97evLA/exec'){
+  if(!PROXY_URL || PROXY_URL==='https://script.google.com/macros/s/AKfycbywtn1c4usTgQ5ZikmcYcLPTIPMFZkMMQTxziwf96qqq04BLYHZXou30qOC6_LvFZ0SMg/exec'){
     // No proxy — store locally only (demo mode)
     callback(null,{ok:true,id:String(Date.now())});
     return;
